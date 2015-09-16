@@ -1,10 +1,10 @@
 package com.microsoft.aad.taskapplication.helpers;
 
 
-import com.microsoft.aad.adal.CacheKey;
 import com.microsoft.aad.adal.ITokenCacheStore;
-import com.microsoft.aad.adal.ITokenStoreQuery;
+import com.microsoft.aad.adal.TokenCache;
 import com.microsoft.aad.adal.TokenCacheItem;
+import com.microsoft.aad.adal.TokenCacheNotificationArgs;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,8 +12,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
-public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
+public class InMemoryCacheStore extends TokenCache implements ITokenCacheStore {
 
     private static final long serialVersionUID = 1L;
     private static final String TAG = "InMemoryCacheStore";
@@ -29,7 +30,7 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
     }
 
 
-    @Override
+
     public TokenCacheItem getItem(String key) {
         if (key == null) {
             throw new IllegalArgumentException("key");
@@ -38,8 +39,8 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
         return cache.get(key);
     }
 
-    @Override
-    public void removeItem(String key) {
+
+    public void removeItem(TokenCacheItem key) {
         if (key == null) {
             throw new IllegalArgumentException("key");
         }
@@ -47,7 +48,7 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
         cache.remove(key);
     }
 
-    @Override
+
     public void setItem(String key, TokenCacheItem item) {
         if (key == null) {
             throw new IllegalArgumentException("key");
@@ -60,7 +61,7 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
         cache.put(key, item);
     }
 
-    @Override
+
     public void removeAll() {
         cache = new HashMap<>();
     }
@@ -70,7 +71,7 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
     /**
      * User can query over iterator values.
      */
-    @Override
+
     public Iterator<TokenCacheItem> getAll() {
 
         Iterator<TokenCacheItem> values = cache.values().iterator();
@@ -82,15 +83,15 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
      *
      * @return unique users
      */
-    @Override
+
     public HashSet<String> getUniqueUsersWithTokenCache() {
         Iterator<TokenCacheItem> results = this.getAll();
         HashSet<String> users = new HashSet<String>();
 
         while (results.hasNext()) {
             TokenCacheItem item = results.next();
-            if (item.getUserInfo() != null && !users.contains(item.getUserInfo().getUserId())) {
-                users.add(item.getUserInfo().getUserId());
+            if (item.getUserInfo() != null && !users.contains(item.getUserInfo().getUniqueId())) {
+                users.add(item.getUserInfo().getUniqueId());
             }
         }
 
@@ -103,14 +104,14 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
      * @param resource Resource identifier
      * @return list of {@link TokenCacheItem}
      */
-    @Override
+
     public ArrayList<TokenCacheItem> getTokensForResource(String resource) {
         Iterator<TokenCacheItem> results = this.getAll();
         ArrayList<TokenCacheItem> tokenItems = new ArrayList<TokenCacheItem>();
 
         while (results.hasNext()) {
             TokenCacheItem item = results.next();
-            if (item.getResource().equals(resource)) {
+            if (item.getScope().equals(resource)) {
                 tokenItems.add(item);
             }
         }
@@ -124,7 +125,7 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
      * @param userid Userid
      * @return list of {@link TokenCacheItem}
      */
-    @Override
+
     public ArrayList<TokenCacheItem> getTokensForUser(String userid) {
         Iterator<TokenCacheItem> results = this.getAll();
         ArrayList<TokenCacheItem> tokenItems = new ArrayList<TokenCacheItem>();
@@ -132,7 +133,7 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
         while (results.hasNext()) {
             TokenCacheItem item = results.next();
             if (item.getUserInfo() != null
-                    && item.getUserInfo().getUserId().equalsIgnoreCase(userid)) {
+                    && item.getUserInfo().getUniqueId().equalsIgnoreCase(userid)) {
                 tokenItems.add(item);
             }
         }
@@ -145,14 +146,14 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
      *
      * @param userid UserId
      */
-    @Override
+
     public void clearTokensForUser(String userid) {
         ArrayList<TokenCacheItem> results = this.getTokensForUser(userid);
 
         for (TokenCacheItem item : results) {
             if (item.getUserInfo() != null
-                    && item.getUserInfo().getUserId().equalsIgnoreCase(userid)) {
-                this.removeItem(CacheKey.createCacheKey(item));
+                    && item.getUserInfo().getUniqueId().equalsIgnoreCase(userid)) {
+                this.removeItem(item);
             }
         }
     }
@@ -162,7 +163,7 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
      *
      * @return list of {@link TokenCacheItem}
      */
-    @Override
+
     public ArrayList<TokenCacheItem> getTokensAboutToExpire() {
         Iterator<TokenCacheItem> results = this.getAll();
         ArrayList<TokenCacheItem> tokenItems = new ArrayList<TokenCacheItem>();
@@ -195,12 +196,57 @@ public class InMemoryCacheStore  implements ITokenCacheStore, ITokenStoreQuery {
         return timeAhead;
     }
 
-    @Override
+
     public boolean contains(String key) {
         if (key == null) {
             throw new IllegalArgumentException("key");
         }
 
         return cache.containsKey(key);
+    }
+
+    @Override
+    public List<TokenCacheItem> readItems() {
+        return null;
+    }
+
+    @Override
+    public void deleteItem(TokenCacheItem tokenCacheItem) {
+
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public void beforeAccess(TokenCacheNotificationArgs tokenCacheNotificationArgs) {
+
+    }
+
+    @Override
+    public void beforeWrite(TokenCacheNotificationArgs tokenCacheNotificationArgs) {
+
+    }
+
+    @Override
+    public void afterAccess(TokenCacheNotificationArgs tokenCacheNotificationArgs) {
+
+    }
+
+    @Override
+    public void stateChanged() {
+
+    }
+
+    @Override
+    public String serialize() {
+        return null;
+    }
+
+    @Override
+    public void deSerialize(String s) {
+
     }
 }

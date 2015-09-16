@@ -39,14 +39,15 @@ public class Constants {
     // PARAMETERS----------------------------------
     public static String AUTHORITY_URL = "https://login.microsoftonline.com/common/v2.0/";
     public static String CLIENT_ID = "<your Application ID>";
-    public static String SCOPES = "<your Application ID>";
-    public static String ADDITIONAL_SCOPES = "";
+    public static String[] SCOPES = {"<your Application ID>"};
+    public static String[] ADDITIONAL_SCOPES = {""};
     public static String REDIRECT_URL = "mstodo://com.microsoft.windowsazure.activedirectory.samples.microsofttasks";
     public static String CORRELATION_ID = "";
     public static String USER_HINT = "";
     public static String EXTRA_QP = "";
     public static String POLICY = "<your facebook sign-in policy";
     public static boolean FULL_SCREEN = true;
+    public static String PROMPT = "PROMPT_ALWAYS";
     public static AuthenticationResult CURRENT_RESULT = null;
     // Endpoint we are targeting for the deployed WebAPI service
     public static String SERVICE_URL = "http://localhost:3000/tasks";
@@ -59,3 +60,5 @@ public class Constants {
 
     public static final String KEY_NAME_ASK_BROKER_INSTALL = "test.settings.ask.broker";
     public static final String KEY_NAME_CHECK_BROKER = "test.settings.check.broker";
+
+}

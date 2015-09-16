@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.aad.adal.PromptBehavior;
 import com.microsoft.aad.taskapplication.helpers.Constants;
 import com.microsoft.aad.taskapplication.helpers.InMemoryCacheStore;
 import com.microsoft.aad.taskapplication.helpers.TodoListHttpService;
@@ -109,15 +110,15 @@ public class ToDoActivity extends Activity {
         try {
             mAuthContext = new AuthenticationContext(ToDoActivity.this, Constants.AUTHORITY_URL,
                     false, InMemoryCacheStore.getInstance());
-            mAuthContext.getCache().removeAll();
+            mAuthContext.getCache();
 
             if(Constants.CORRELATION_ID != null &&
                     Constants.CORRELATION_ID.trim().length() !=0){
                 mAuthContext.setRequestCorrelationId(UUID.fromString(Constants.CORRELATION_ID));
             }
 
-            mAuthContext.acquireToken(ToDoActivity.this, Constants.RESOURCE_ID,
-                    Constants.CLIENT_ID, Constants.REDIRECT_URL, Constants.USER_HINT,
+            mAuthContext.acquireToken(ToDoActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.POLICY, Constants.CLIENT_ID,
+                    Constants.REDIRECT_URL, null, PromptBehavior.Always,
                     "nux=1&" + Constants.EXTRA_QP,
                     new AuthenticationCallback<AuthenticationResult>() {
 
@@ -212,8 +213,9 @@ public class ToDoActivity extends Activity {
     private void getToken(final AuthenticationCallback callback) {
 
         // one of the acquireToken overloads
-        mAuthContext.acquireToken(ToDoActivity.this, Constants.RESOURCE_ID, Constants.CLIENT_ID,
-                Constants.REDIRECT_URL, Constants.USER_HINT, "nux=1&" + Constants.EXTRA_QP, callback);
+        mAuthContext.acquireToken(ToDoActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES,
+                Constants.POLICY, Constants.CLIENT_ID, Constants.REDIRECT_URL, null,
+                PromptBehavior.Always, "nux=1&" + Constants.EXTRA_QP, callback);
     }
 
     private AuthenticationResult getLocalToken() {

@@ -52,8 +52,8 @@ public class UsersListActivity extends Activity {
                         Constants.CORRELATION_ID.trim().length() !=0){
                     mAuthContext.setRequestCorrelationId(UUID.fromString(Constants.CORRELATION_ID));
                 }
-                mAuthContext.acquireToken(UsersListActivity.this, Constants.RESOURCE_ID, Constants.CLIENT_ID,
-                        Constants.REDIRECT_URL, Constants.USER_HINT, PromptBehavior.REFRESH_SESSION,
+                mAuthContext.acquireToken(UsersListActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.POLICY, Constants.CLIENT_ID,
+                        Constants.REDIRECT_URL, null, PromptBehavior.REFRESH_SESSION,
                         "nux=1" + Constants.EXTRA_QP, new AuthenticationCallback<AuthenticationResult>() {
 
                             @Override
