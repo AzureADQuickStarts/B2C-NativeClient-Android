@@ -37,11 +37,11 @@ public class Constants {
 
     // -------------------------------AAD
     // PARAMETERS----------------------------------
-    public static String AUTHORITY_URL = "https://login.microsoftonline.com/common/v2.0/";
+    public static String AUTHORITY_URL = "https://login.microsoftonline.com/<your tenant name>.onmicrosoft.com/";
     public static String CLIENT_ID = "<your Application ID>";
     public static String[] SCOPES = {"<your Application ID>"};
     public static String[] ADDITIONAL_SCOPES = {""};
-    public static String REDIRECT_URL = "mstodo://com.microsoft.windowsazure.activedirectory.samples.microsofttasks";
+    public static String REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
     public static String CORRELATION_ID = "";
     public static String USER_HINT = "";
     public static String EXTRA_QP = "";
