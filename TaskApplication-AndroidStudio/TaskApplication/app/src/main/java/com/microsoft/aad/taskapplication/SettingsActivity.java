@@ -115,7 +115,7 @@ public class SettingsActivity extends Activity {
         TextView textView = (TextView)findViewById(R.id.authority);
         textView.setText(Constants.AUTHORITY_URL);
         textView = (TextView)findViewById(R.id.resource);
-      //  textView.setText(Constants.SCOPES);
+        textView.setText(Constants.SCOPES[0]);
         textView = (TextView)findViewById(R.id.clientId);
         textView.setText(Constants.CLIENT_ID);
         textView = (TextView)findViewById(R.id.extraQueryParameters);
