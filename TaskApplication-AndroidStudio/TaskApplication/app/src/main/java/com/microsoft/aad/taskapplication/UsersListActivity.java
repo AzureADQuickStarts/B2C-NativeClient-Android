@@ -52,7 +52,7 @@ public class UsersListActivity extends Activity {
                         Constants.CORRELATION_ID.trim().length() !=0){
                     mAuthContext.setRequestCorrelationId(UUID.fromString(Constants.CORRELATION_ID));
                 }
-                mAuthContext.acquireToken(UsersListActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.POLICY, Constants.CLIENT_ID,
+                mAuthContext.acquireToken(UsersListActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.FB_POLICY, Constants.CLIENT_ID,
                         Constants.REDIRECT_URL, null, PromptBehavior.REFRESH_SESSION,
                         "nux=1" + Constants.EXTRA_QP, new AuthenticationCallback<AuthenticationResult>() {
 
@@ -108,7 +108,7 @@ public class UsersListActivity extends Activity {
             mAuthContext.setRequestCorrelationId(UUID.fromString(Constants.CORRELATION_ID));
         }
 
-        mAuthContext.acquireToken(UsersListActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.POLICY, Constants.CLIENT_ID,
+        mAuthContext.acquireToken(UsersListActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.FB_POLICY, Constants.CLIENT_ID,
                 Constants.REDIRECT_URL, null, PromptBehavior.REFRESH_SESSION,
                 "nux=1&" + Constants.EXTRA_QP, new AuthenticationCallback<AuthenticationResult>() {
 

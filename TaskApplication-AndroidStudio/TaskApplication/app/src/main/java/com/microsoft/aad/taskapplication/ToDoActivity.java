@@ -71,11 +71,11 @@ public class ToDoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_todo_items);
+        setContentView(R.layout.activity_signin);
         Toast.makeText(getApplicationContext(), TAG + "LifeCycle: OnCreate", Toast.LENGTH_SHORT)
                 .show();
 
-        Button button = (Button) findViewById(R.id.switchUserButton);
+/*        Button button = (Button) findViewById(R.id.switchUserButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +84,7 @@ public class ToDoActivity extends Activity {
             }
         });
 
-        button = (Button) findViewById(R.id.addTaskButton);
+        Button mbutton = (Button) findViewById(R.id.addTaskButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,14 +93,47 @@ public class ToDoActivity extends Activity {
             }
         });
 
-        button = (Button) findViewById(R.id.appSettingsButton);
+        Button abutton = (Button) findViewById(R.id.appSettingsButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ToDoActivity.this, SettingsActivity.class);
                 startActivity(intent);
+
+            }
+        });*/
+
+        Button fbutton = (Button) findViewById(R.id.signin_facebook);
+        fbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ToDoActivity.this, SettingsActivity.class);
+                startActivity(intent);
+
             }
         });
+
+        Button ebutton = (Button) findViewById(R.id.signin_email);
+        ebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ToDoActivity.this, SettingsActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        Button ubutton = (Button) findViewById(R.id.signup_email);
+        ubutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ToDoActivity.this, SettingsActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
 
         mLoginProgressDialog = new ProgressDialog(this);
         mLoginProgressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -117,7 +150,7 @@ public class ToDoActivity extends Activity {
                 mAuthContext.setRequestCorrelationId(UUID.fromString(Constants.CORRELATION_ID));
             }
 
-            mAuthContext.acquireToken(ToDoActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.POLICY, Constants.CLIENT_ID,
+            mAuthContext.acquireToken(ToDoActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.FB_POLICY, Constants.CLIENT_ID,
                     Constants.REDIRECT_URL, null, PromptBehavior.Always,
                     "nux=1&" + Constants.EXTRA_QP,
                     new AuthenticationCallback<AuthenticationResult>() {
@@ -214,7 +247,7 @@ public class ToDoActivity extends Activity {
 
         // one of the acquireToken overloads
         mAuthContext.acquireToken(ToDoActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES,
-                Constants.POLICY, Constants.CLIENT_ID, Constants.REDIRECT_URL, null,
+                Constants.FB_POLICY, Constants.CLIENT_ID, Constants.REDIRECT_URL, null,
                 PromptBehavior.Always, "nux=1&" + Constants.EXTRA_QP, callback);
     }
 

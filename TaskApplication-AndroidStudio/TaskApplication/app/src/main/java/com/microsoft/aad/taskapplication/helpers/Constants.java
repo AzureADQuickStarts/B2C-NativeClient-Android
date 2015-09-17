@@ -45,9 +45,10 @@ public class Constants {
     public static String CORRELATION_ID = "";
     public static String USER_HINT = "";
     public static String EXTRA_QP = "";
-    public static String POLICY = "<your facebook sign-in policy";
+    public static String FB_POLICY = "<your facebook sign-in policy";
+    public static String EMAIL_SIGNIN_POLICY = "<your email sign-in policy";
+    public static String EMAIL_SIGNUP_POLICY = "<your email sign-up policy";
     public static boolean FULL_SCREEN = true;
-    public static String PROMPT = "PROMPT_ALWAYS";
     public static AuthenticationResult CURRENT_RESULT = null;
     // Endpoint we are targeting for the deployed WebAPI service
     public static String SERVICE_URL = "http://localhost:3000/tasks";

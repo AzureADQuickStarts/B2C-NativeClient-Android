@@ -75,8 +75,14 @@ public class SettingsActivity extends Activity {
                 textView = (TextView)findViewById(R.id.serviceUrl);
                 textView.setText(Constants.SERVICE_URL);
 
-                textView = (TextView)findViewById(R.id.serviceUrl);
-                textView.setText(Constants.POLICY);
+                textView = (TextView)findViewById(R.id.fb_signin);
+                textView.setText(Constants.FB_POLICY);
+
+                textView = (TextView)findViewById(R.id.email_signin);
+                textView.setText(Constants.EMAIL_SIGNIN_POLICY);
+
+                textView = (TextView)findViewById(R.id.email_signup);
+                textView.setText(Constants.EMAIL_SIGNUP_POLICY);
 
                 textView = (TextView)findViewById(R.id.correlationId);
                 textView.setText(Constants.CORRELATION_ID);
@@ -118,8 +124,12 @@ public class SettingsActivity extends Activity {
         textView.setText(Constants.REDIRECT_URL);
         textView = (TextView)findViewById(R.id.serviceUrl);
         textView.setText(Constants.SERVICE_URL);
-        textView = (TextView)findViewById(R.id.resource);
-        textView.setText(Constants.POLICY);
+        textView = (TextView)findViewById(R.id.fb_signin);
+        textView.setText(Constants.FB_POLICY);
+        textView = (TextView)findViewById(R.id.email_signin);
+        textView.setText(Constants.EMAIL_SIGNIN_POLICY);
+        textView = (TextView)findViewById(R.id.email_signup);
+        textView.setText(Constants.EMAIL_SIGNUP_POLICY);
         textView = (TextView)findViewById(R.id.correlationId);
         textView.setText(Constants.CORRELATION_ID);
 
