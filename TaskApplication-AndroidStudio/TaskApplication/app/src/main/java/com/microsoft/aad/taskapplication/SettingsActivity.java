@@ -58,7 +58,7 @@ public class SettingsActivity extends Activity {
                 Constants.AUTHORITY_URL = textView.getText().toString();
 
                 textView = (TextView)findViewById(R.id.resource);
-                Constants.RESOURCE_ID = textView.getText().toString();
+            //    Constants.SCOPES = textView.getText().toString();
 
                 textView = (TextView)findViewById(R.id.clientId);
                 Constants.CLIENT_ID = textView.getText().toString();
@@ -74,6 +74,9 @@ public class SettingsActivity extends Activity {
 
                 textView = (TextView)findViewById(R.id.serviceUrl);
                 textView.setText(Constants.SERVICE_URL);
+
+                textView = (TextView)findViewById(R.id.serviceUrl);
+                textView.setText(Constants.POLICY);
 
                 textView = (TextView)findViewById(R.id.correlationId);
                 textView.setText(Constants.CORRELATION_ID);
@@ -106,7 +109,7 @@ public class SettingsActivity extends Activity {
         TextView textView = (TextView)findViewById(R.id.authority);
         textView.setText(Constants.AUTHORITY_URL);
         textView = (TextView)findViewById(R.id.resource);
-        textView.setText(Constants.RESOURCE_ID);
+      //  textView.setText(Constants.SCOPES);
         textView = (TextView)findViewById(R.id.clientId);
         textView.setText(Constants.CLIENT_ID);
         textView = (TextView)findViewById(R.id.extraQueryParameters);
@@ -115,6 +118,8 @@ public class SettingsActivity extends Activity {
         textView.setText(Constants.REDIRECT_URL);
         textView = (TextView)findViewById(R.id.serviceUrl);
         textView.setText(Constants.SERVICE_URL);
+        textView = (TextView)findViewById(R.id.resource);
+        textView.setText(Constants.POLICY);
         textView = (TextView)findViewById(R.id.correlationId);
         textView.setText(Constants.CORRELATION_ID);
 

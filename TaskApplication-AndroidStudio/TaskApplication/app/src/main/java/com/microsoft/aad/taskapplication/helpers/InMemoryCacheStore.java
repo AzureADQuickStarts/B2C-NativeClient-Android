@@ -239,14 +239,4 @@ public class InMemoryCacheStore extends TokenCache implements ITokenCacheStore {
     public void stateChanged() {
 
     }
-
-    @Override
-    public String serialize() {
-        return null;
-    }
-
-    @Override
-    public void deSerialize(String s) {
-
-    }
 }

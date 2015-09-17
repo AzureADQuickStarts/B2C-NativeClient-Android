@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;
-import com.microsoft.aad.adal.ITokenStoreQuery;
+import com.microsoft.aad.adal.ITokenCacheStore;
 import com.microsoft.aad.adal.PromptBehavior;
 import com.microsoft.aad.adal.TokenCacheItem;
 import com.microsoft.aad.taskapplication.helpers.Constants;
@@ -90,8 +90,9 @@ public class UsersListActivity extends Activity {
 
     private List<String> refreshedUsersList() {
         List<String> list = new ArrayList<>();
-        ITokenStoreQuery cacheStoreQuery = InMemoryCacheStore.getInstance();
-        Iterator<TokenCacheItem> iter = cacheStoreQuery.getAll();
+        ITokenCacheStore cacheStoreQuery = InMemoryCacheStore.getInstance();
+        List<TokenCacheItem> cachelist = cacheStoreQuery.readItems();
+        Iterator<TokenCacheItem> iter = cachelist.iterator();
         while (iter.hasNext()) {
             TokenCacheItem item = iter.next();
             if (item.getUserInfo() != null && !list.contains(item.getUserInfo().getDisplayableId())) {
@@ -107,8 +108,8 @@ public class UsersListActivity extends Activity {
             mAuthContext.setRequestCorrelationId(UUID.fromString(Constants.CORRELATION_ID));
         }
 
-        mAuthContext.acquireToken(UsersListActivity.this, Constants.RESOURCE_ID, Constants.CLIENT_ID,
-                Constants.REDIRECT_URL, user, PromptBehavior.REFRESH_SESSION,
+        mAuthContext.acquireToken(UsersListActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, Constants.POLICY, Constants.CLIENT_ID,
+                Constants.REDIRECT_URL, null, PromptBehavior.REFRESH_SESSION,
                 "nux=1&" + Constants.EXTRA_QP, new AuthenticationCallback<AuthenticationResult>() {
 
                     @Override
