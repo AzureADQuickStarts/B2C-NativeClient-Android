@@ -76,16 +76,6 @@ public class ToDoActivity extends Activity {
         Toast.makeText(getApplicationContext(), TAG + "LifeCycle: OnCreate", Toast.LENGTH_SHORT)
                 .show();
 
-        String policy = getIntent().getStringExtra("thePolicy");
-        Button zbutton = (Button) findViewById(R.id.switchUserButton);
-        zbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ToDoActivity.this, UsersListActivity.class);
-                startActivity(intent);
-            }
-        });
-
         Button mbutton = (Button) findViewById(R.id.addTaskButton);
         mbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +108,7 @@ public class ToDoActivity extends Activity {
             mAuthContext = new AuthenticationContext(ToDoActivity.this, Constants.AUTHORITY_URL,
                     false, InMemoryCacheStore.getInstance());
             mAuthContext.getCache();
+            String policy = getIntent().getStringExtra("thePolicy");
 
             if(Constants.CORRELATION_ID != null &&
                     Constants.CORRELATION_ID.trim().length() !=0){
@@ -164,7 +155,7 @@ public class ToDoActivity extends Activity {
         textView.setText("N/A");
         if (Constants.CURRENT_RESULT != null) {
             if (Constants.CURRENT_RESULT.getIdToken() != null) {
-                textView.setText(Constants.CURRENT_RESULT.getUserInfo().getDisplayableId());
+                textView.setText(Constants.CURRENT_RESULT.getUserInfo().getGivenName());
             } else {
                 textView.setText("User with No ID Token");
             }
