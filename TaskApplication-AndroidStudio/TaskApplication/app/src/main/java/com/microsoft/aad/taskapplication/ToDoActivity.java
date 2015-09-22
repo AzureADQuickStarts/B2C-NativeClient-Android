@@ -60,11 +60,12 @@ import java.util.UUID;
 
 public class ToDoActivity extends Activity {
 
-    private static AuthenticationResult sResult;
+
 
     private final static String TAG = "ToDoActivity";
 
     private AuthenticationContext mAuthContext;
+    private static AuthenticationResult sResult;
 
     /**
      * Adapter to sync the items list with the view
@@ -261,13 +262,6 @@ public class ToDoActivity extends Activity {
 
     private void initAppTables() {
         try {
-            // Get the Mobile Service Table instance to use
-//            mToDoTable = mClient.getTable(WorkItem.class);
-//            mToDoTable.TABvLES_URL = "/api/";
-            //mTextNewToDo = (EditText)findViewById(R.id.listViewToDo);
-
-            // Create an adapter to bind the items with the view
-            //mAdapter = new WorkItemAdapter(ToDoActivity.this, R.layout.listViewToDo);
             ListView listViewToDo = (ListView) findViewById(R.id.listViewToDo);
             listViewToDo.setAdapter(mAdapter);
 
@@ -288,11 +282,11 @@ public class ToDoActivity extends Activity {
     }
 
     private AuthenticationResult getLocalToken() {
-        return Constants.CURRENT_RESULT;
+        return sResult;
     }
 
     private void setLocalToken(AuthenticationResult newToken) {
-        Constants.CURRENT_RESULT = newToken;
+        sResult = newToken;
     }
 
     @Override
