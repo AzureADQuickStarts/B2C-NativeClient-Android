@@ -24,9 +24,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,19 +39,28 @@ import android.widget.Toast;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.aad.adal.AuthenticationSettings;
+import com.microsoft.aad.adal.UserIdentifier;
 import com.microsoft.aad.adal.PromptBehavior;
 import com.microsoft.aad.taskapplication.helpers.Constants;
 import com.microsoft.aad.taskapplication.helpers.InMemoryCacheStore;
 import com.microsoft.aad.taskapplication.helpers.TodoListHttpService;
+import com.microsoft.aad.taskapplication.helpers.Utils;
 import com.microsoft.aad.taskapplication.helpers.WorkItemAdapter;
 
+
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ToDoActivity extends Activity {
+
+    private static AuthenticationResult sResult;
 
     private final static String TAG = "ToDoActivity";
 
@@ -73,11 +85,20 @@ public class ToDoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_todo_items);
+        CookieSyncManager.createInstance(getApplicationContext());
         Toast.makeText(getApplicationContext(), TAG + "LifeCycle: OnCreate", Toast.LENGTH_SHORT)
                 .show();
 
-        Button mbutton = (Button) findViewById(R.id.addTaskButton);
-        mbutton.setOnClickListener(new View.OnClickListener() {
+        // Clear previous sessions
+        clearSessionCookie();
+        try {
+            // Provide key info for Encryption
+            if (Build.VERSION.SDK_INT < 18) {
+                Utils.setupKeyForSample();
+            }
+
+        Button button = (Button) findViewById(R.id.addTaskButton);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ToDoActivity.this, AddTaskActivity.class);
@@ -85,8 +106,8 @@ public class ToDoActivity extends Activity {
             }
         });
 
-        Button abutton = (Button) findViewById(R.id.appSettingsButton);
-        abutton.setOnClickListener(new View.OnClickListener() {
+        button = (Button) findViewById(R.id.appSettingsButton);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ToDoActivity.this, SettingsActivity.class);
@@ -95,8 +116,18 @@ public class ToDoActivity extends Activity {
             }
         });
 
+        button = (Button) findViewById(R.id.switchUserButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ToDoActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 
+        final TextView name = (TextView)findViewById(R.id.userLoggedIn);
 
 
         mLoginProgressDialog = new ProgressDialog(this);
@@ -106,8 +137,7 @@ public class ToDoActivity extends Activity {
         // Ask for token and provide callback
         try {
             mAuthContext = new AuthenticationContext(ToDoActivity.this, Constants.AUTHORITY_URL,
-                    false, InMemoryCacheStore.getInstance());
-            mAuthContext.getCache();
+                    false);
             String policy = getIntent().getStringExtra("thePolicy");
 
             if(Constants.CORRELATION_ID != null &&
@@ -115,8 +145,10 @@ public class ToDoActivity extends Activity {
                 mAuthContext.setRequestCorrelationId(UUID.fromString(Constants.CORRELATION_ID));
             }
 
+            AuthenticationSettings.INSTANCE.setSkipBroker(true);
+
             mAuthContext.acquireToken(ToDoActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES, policy, Constants.CLIENT_ID,
-                    Constants.REDIRECT_URL, null, PromptBehavior.Always,
+                    Constants.REDIRECT_URL, getUserInfo(), PromptBehavior.Always,
                     "nux=1&" + Constants.EXTRA_QP,
                     new AuthenticationCallback<AuthenticationResult>() {
 
@@ -135,10 +167,20 @@ public class ToDoActivity extends Activity {
                                 mLoginProgressDialog.dismiss();
                             }
 
-                            if (result != null && !result.getAccessToken().isEmpty()) {
+                            if (result != null && !result.getToken().isEmpty()) {
                                 setLocalToken(result);
                                 updateLoggedInUser();
                                 getTasks();
+                                ToDoActivity.sResult = result;
+                                Toast.makeText(getApplicationContext(), "Token is returned", Toast.LENGTH_SHORT)
+                                        .show();
+
+                                if (sResult.getUserInfo() != null) {
+                                    name.setText(result.getUserInfo().getDisplayableId());
+                                    Toast.makeText(getApplicationContext(),
+                                            "User:" + sResult.getUserInfo().getDisplayableId(), Toast.LENGTH_SHORT)
+                                            .show();
+                                }
                             } else {
                                 //TODO: popup error alert
                             }
@@ -148,28 +190,55 @@ public class ToDoActivity extends Activity {
             SimpleAlertDialog.showAlertDialog(ToDoActivity.this, "Exception caught", e.getMessage());
         }
         Toast.makeText(ToDoActivity.this, TAG + "done", Toast.LENGTH_SHORT).show();
+    } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }}
+
+    private void clearSessionCookie() {
+
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeSessionCookie();
+        CookieSyncManager.getInstance().sync();
     }
 
     private void updateLoggedInUser() {
         TextView textView = (TextView) findViewById(R.id.userLoggedIn);
         textView.setText("N/A");
-        if (Constants.CURRENT_RESULT != null) {
-            if (Constants.CURRENT_RESULT.getIdToken() != null) {
-                textView.setText(Constants.CURRENT_RESULT.getUserInfo().getGivenName());
-            } else {
+        if (sResult != null) {
+            if (sResult.getToken() != null)
+                textView.setText(sResult.getUserInfo().getDisplayableId());
+            else {
                 textView.setText("User with No ID Token");
             }
         }
     }
 
+    private String getUniqueId() {
+        if (sResult != null && sResult.getUserInfo() != null
+                && sResult.getUserInfo().getUniqueId() != null) {
+            return sResult.getUserInfo().getUniqueId();
+        }
 
+        return null;
+    }
+
+    private UserIdentifier getUserInfo() {
+
+        final TextView names = (TextView)findViewById(R.id.userLoggedIn);
+        String name = names.getText().toString();
+        return new UserIdentifier(name, UserIdentifier.UserIdentifierType.OptionalDisplayableId);
+    }
     private void getTasks() {
-        if (Constants.CURRENT_RESULT == null || Constants.CURRENT_RESULT.getAccessToken().isEmpty())
+        if (Constants.CURRENT_RESULT == null || Constants.CURRENT_RESULT.getToken().isEmpty())
             return;
 
         List<String> items = new ArrayList<>();
         try {
-            items = new TodoListHttpService().getAllItems(Constants.CURRENT_RESULT.getAccessToken());
+            items = new TodoListHttpService().getAllItems(Constants.CURRENT_RESULT.getToken());
         } catch (Exception e) {
             items = new ArrayList<>();
         }
@@ -214,7 +283,7 @@ public class ToDoActivity extends Activity {
 
         // one of the acquireToken overloads
         mAuthContext.acquireToken(ToDoActivity.this, Constants.SCOPES, Constants.ADDITIONAL_SCOPES,
-                policy, Constants.CLIENT_ID, Constants.REDIRECT_URL, null,
+                policy, Constants.CLIENT_ID, Constants.REDIRECT_URL, getUserInfo(),
                 PromptBehavior.Always, "nux=1&" + Constants.EXTRA_QP, callback);
     }
 

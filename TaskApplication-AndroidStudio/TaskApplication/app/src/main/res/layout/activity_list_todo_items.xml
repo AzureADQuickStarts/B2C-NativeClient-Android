@@ -9,12 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="#ff5b89fa"
-        android:padding="6dip">
+        android:padding="6dip"
+        android:weightSum="1">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Switch User"
+            android:text="Logout"
             android:id="@+id/switchUserButton" />
 
         <TextView
@@ -43,16 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="77dp">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="App Settings"
-                android:id="@+id/appSettingsButton"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:layout_columnSpan="2"
-                android:onClick=""/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,6 +62,15 @@
                 android:layout_row="1"
                 android:layout_column="1"
                 android:layout_columnSpan="5" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App Settings"
+                android:id="@+id/appSettingsButton"
+                android:layout_row="0"
+                android:layout_column="25"
+                android:onClick=""/>
         </GridLayout>
 
     </LinearLayout>

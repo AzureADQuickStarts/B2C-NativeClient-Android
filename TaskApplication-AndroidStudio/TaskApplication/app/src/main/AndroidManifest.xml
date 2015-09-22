@@ -32,10 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.microsoft.aad.taskapplication.UsersListActivity"
-            android:label="@string/title_activity_feed" >
-        </activity>
-        <activity
             android:name="com.microsoft.aad.taskapplication.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>

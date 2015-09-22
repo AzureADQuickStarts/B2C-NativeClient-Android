@@ -13,17 +13,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign In with Email"
-        android:id="@+id/signin_email" />
+        android:id="@+id/signin_email"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign In With Facebook"
-        android:id="@+id/signin_facebook" />
+        android:id="@+id/signin_facebook"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign Up with Email"
-        android:id="@+id/signup_email" />
+        android:id="@+id/signup_email"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp" />
 </LinearLayout>

@@ -17,7 +17,7 @@ import com.microsoft.aad.taskapplication.helpers.WorkItemAdapter;
  */
 public class LoginActivity extends Activity {
 
-    private final static String TAG = "ToDoActivity";
+    private final static String TAG = "LoginActivity";
 
     private AuthenticationContext mAuthContext;
 
@@ -39,8 +39,8 @@ public class LoginActivity extends Activity {
         Toast.makeText(getApplicationContext(), TAG + "LifeCycle: OnCreate", Toast.LENGTH_SHORT)
                 .show();
 
-        Button fbutton = (Button) findViewById(R.id.signin_facebook);
-        fbutton.setOnClickListener(new View.OnClickListener() {
+        Button button = (Button) findViewById(R.id.signin_facebook);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ToDoActivity.class);
@@ -50,8 +50,8 @@ public class LoginActivity extends Activity {
             }
         });
 
-        Button ebutton = (Button) findViewById(R.id.signin_email);
-        ebutton.setOnClickListener(new View.OnClickListener() {
+       button = (Button) findViewById(R.id.signin_email);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ToDoActivity.class);
@@ -61,8 +61,8 @@ public class LoginActivity extends Activity {
             }
         });
 
-        Button ubutton = (Button) findViewById(R.id.signup_email);
-        ubutton.setOnClickListener(new View.OnClickListener() {
+        button = (Button) findViewById(R.id.signup_email);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ToDoActivity.class);

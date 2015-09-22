@@ -28,7 +28,7 @@ public class AddTaskActivity extends Activity {
 
                     TodoListHttpService service = new TodoListHttpService();
                     try {
-                        service.addItem(textField.getText().toString(), Constants.CURRENT_RESULT.getAccessToken());
+                        service.addItem(textField.getText().toString(), Constants.CURRENT_RESULT.getToken());
                     } catch (Exception e) {
                         SimpleAlertDialog.showAlertDialog(getApplicationContext(), "Exception caught", e.getMessage());
                     }
