@@ -37,21 +37,21 @@ public class Constants {
 
     // -------------------------------AAD
     // PARAMETERS----------------------------------
-    public static String AUTHORITY_URL = "https://login.microsoftonline.com/<your tenant name>.onmicrosoft.com/";
-    public static String CLIENT_ID = "<your Application ID>";
-    public static String[] SCOPES = {"<your Application ID>"};
+    public static String AUTHORITY_URL = "https://login.microsoftonline.com/hypercubeb2c.onmicrosoft.com/";
+    public static String CLIENT_ID = "7bf688ce-8139-4ca8-9391-02fdb6f86d67";
+    public static String[] SCOPES = {"7bf688ce-8139-4ca8-9391-02fdb6f86d67"};
     public static String[] ADDITIONAL_SCOPES = {""};
     public static String REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
     public static String CORRELATION_ID = "";
     public static String USER_HINT = "";
     public static String EXTRA_QP = "";
-    public static String FB_POLICY = "<your facebook sign-in policy";
-    public static String EMAIL_SIGNIN_POLICY = "<your email sign-in policy";
-    public static String EMAIL_SIGNUP_POLICY = "<your email sign-up policy";
+    public static String FB_POLICY = "B2C_1_todo_facebook_signin";
+    public static String EMAIL_SIGNIN_POLICY = "B2C_1_todo_email_signin";
+    public static String EMAIL_SIGNUP_POLICY = "B2C_1_todo_email_signup";
     public static boolean FULL_SCREEN = true;
     public static AuthenticationResult CURRENT_RESULT = null;
     // Endpoint we are targeting for the deployed WebAPI service
-    public static String SERVICE_URL = "http://localhost:3000/tasks";
+    public static String SERVICE_URL = "https://kidventus.net/todoserver/tasks";
 
     // ------------------------------------------------------------------------------------------
 

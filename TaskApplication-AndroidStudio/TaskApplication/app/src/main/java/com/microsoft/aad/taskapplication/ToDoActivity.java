@@ -234,12 +234,12 @@ public class ToDoActivity extends Activity {
         return new UserIdentifier(name, UserIdentifier.UserIdentifierType.OptionalDisplayableId);
     }
     private void getTasks() {
-        if (Constants.CURRENT_RESULT == null || Constants.CURRENT_RESULT.getToken().isEmpty())
+        if (sResult == null || sResult.getToken().isEmpty())
             return;
 
         List<String> items = new ArrayList<>();
         try {
-            items = new TodoListHttpService().getAllItems(Constants.CURRENT_RESULT.getToken());
+            items = new TodoListHttpService().getAllItems(sResult.getToken());
         } catch (Exception e) {
             items = new ArrayList<>();
         }
@@ -282,11 +282,13 @@ public class ToDoActivity extends Activity {
     }
 
     private AuthenticationResult getLocalToken() {
-        return sResult;
+        return Constants.CURRENT_RESULT;
     }
 
     private void setLocalToken(AuthenticationResult newToken) {
-        sResult = newToken;
+
+
+        Constants.CURRENT_RESULT = newToken;
     }
 
     @Override
