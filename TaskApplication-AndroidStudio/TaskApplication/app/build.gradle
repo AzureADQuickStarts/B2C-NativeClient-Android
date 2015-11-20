@@ -33,7 +33,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile('com.microsoft.aad:adal:2.0-alpha') {
+    compile('com.microsoft.aad:adal:2.0.1-alpha') {
         exclude group: 'com.android.support'
     }
 }
